@@ -57,18 +57,11 @@ public class Model extends AbstractModel {
     }
 
     public List<Partido> getPartidos() {
-        if (equipoActual == null) {
+        if (equipoActual == null || equipoActual.getId() == null || equipoActual.getId().trim().isEmpty()) {
             return new ArrayList<>();
         }
 
-        if (equipoActual.getId() == null || equipoActual.getId().trim().isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        return partidos.stream()
-                .filter(p -> (p.getEquipoCasa() != null && p.getEquipoCasa().getId().equals(equipoActual.getId())) ||
-                        (p.getEquipoVisita() != null && p.getEquipoVisita().getId().equals(equipoActual.getId())))
-                .collect(Collectors.toList());
+        return Service.instance().findPartidosByEquipo(equipoActual);
     }
 
     public void setPartidos(List<Partido> partidos) {
